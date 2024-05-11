@@ -6,6 +6,20 @@ export const routes: Routes = [
         loadComponent: () => import('./modules/login/login.component')
     },
     {
+        path: 'dashboard',
+        loadComponent: () => import('./modules/dashboard/dashboard.component'),
+        children: [
+            {
+                path: 'match',
+                loadComponent: () => import('./modules/matches/matches.component')
+            },
+            {
+                path: 'team',
+                loadComponent: () => import('./modules/teams/teams.component')
+            }
+        ]
+    },
+    {
         path: '**',
         redirectTo: 'login'
     }
