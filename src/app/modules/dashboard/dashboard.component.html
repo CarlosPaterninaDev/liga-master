@@ -1,3 +1,20 @@
-<p>dashboard works!</p>
+<mat-drawer-container class="example-container">
+  <mat-drawer mode="side" opened>Drawer content
 
-<router-outlet></router-outlet>
+    <div class="menu">
+        <button routerLink="team">Team</button>
+        <button routerLink="match">Match</button>
+    
+    </div>
+
+
+
+  </mat-drawer>
+  <mat-drawer-content >
+
+    <div class="content">
+        <router-outlet></router-outlet>
+
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

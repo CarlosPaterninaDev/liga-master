@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterModule ],
+  imports: [RouterModule, MatSidenavModule ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

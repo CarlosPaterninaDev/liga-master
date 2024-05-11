@@ -16,6 +16,10 @@ export const routes: Routes = [
             {
                 path: 'team',
                 loadComponent: () => import('./modules/teams/teams.component')
+            },
+            {
+                path: '**',
+                redirectTo: 'team',
             }
         ]
     },
