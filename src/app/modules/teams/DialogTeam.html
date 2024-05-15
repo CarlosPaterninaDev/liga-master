@@ -1,0 +1,47 @@
+<form class="card mt-3" [formGroup]="form">
+    <div *ngIf="action!='delete';else other_content">
+        <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 1rem;">
+            <div class="m-1 d-flex align-items-center flex-column flex-sm-row gap-2">
+                <h2 class="m-0 mr-2">
+                    {{title}}
+                </h2>
+                <small class="title-description">
+                    Digite todos los campos
+                </small>
+            </div>
+        </div>
+        <div class="card-body row justify-content-center">
+            <mat-form-field appearance="outline" class="col-12 col-md-6">
+                <mat-label>Nombre del equipo</mat-label>
+                <input matInput formControlName="name" type="text" [maxlength]="500">
+            </mat-form-field>
+            <div class="image-upload">
+                <input type="file" (change)="onFileSelected($event)" hidden #fileInput>
+                <button mat-raised-button (click)="fileInput.click()">Seleccionar Escudo</button>
+                <img [src]="previewUrl" *ngIf="previewUrl" class="image-preview">
+            </div>
+
+        </div>
+    </div>
+
+    <ng-template #other_content>
+        <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 1rem;">
+            <div class="m-1 d-flex align-items-center flex-column flex-sm-row gap-2">
+
+                <h2 class="m-0 mr-2">
+                    {{title}}
+                </h2>
+                <small class="title-description">
+                    Desea eliminar al equipo <span class="span_style">{{data.teamName}}</span>?
+                </small>
+
+            </div>
+        </div>
+    </ng-template>
+
+    <div class="card-footer d-flex align-items-center justify-content-end gap-2">
+        <button mat-flat-button class="btn_cancel" type="button" (click)="dialogClose()">Cancelar</button>
+        <button mat-flat-button type="button" (click)="create()" class="btn_save">{{actions[action]}}</button>
+
+    </div>
+</form>
