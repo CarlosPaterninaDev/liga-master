@@ -4,76 +4,20 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTreeModule } from '@angular/material/tree';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatTabsModule } from '@angular/material/tabs';
-import { CdkTreeModule } from '@angular/cdk/tree';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatSortModule } from '@angular/material/sort';
-import { MatRadioModule } from '@angular/material/radio';
+import { DataService } from '../../services/data.service';
+import { SharedModule } from '../shared.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
+import { Team } from '../../models/team.model';
 type ActionType = 'new' | 'edit' | 'delete';
 @Component({
   selector: 'app-teams',
   standalone: true,
-  imports: [CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatProgressSpinnerModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatTreeModule,
-    MatPaginatorModule,
-    MatTableModule,
-    MatTooltipModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatAutocompleteModule,
-    MatTabsModule,
-    CdkTreeModule,
-    DragDropModule,
-    MatProgressBarModule,
-    MatSortModule,
-    MatRadioModule,MatSnackBarModule],
+  imports: [SharedModule],
   templateUrl: './teams.component.html',
   styleUrl: './teams.component.scss'
 })
 export default class TeamsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['teamName','EscudoUrl', 'actions'];
+  displayedColumns: string[] = ['teamName', 'teamImage', 'actions'];
   class: string = ""
   title: string = "Listado de equipos"
   pageSizeOptions: number[] = [10, 20, 50, 100]
@@ -81,7 +25,7 @@ export default class TeamsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   static switch: any = 0;
   dataSource: any = [];
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private dataService: DataService) { }
   ngOnInit() {
 
     this.loadExistingTeams();
@@ -91,7 +35,8 @@ export default class TeamsComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
   loadExistingTeams() {
-    this.dataSource = new MatTableDataSource<any>(JSON.parse(localStorage.getItem('teamsData')!) || []);
+    let data = this.dataService.getItems('teamsData')
+    this.dataSource = new MatTableDataSource<any>(data);
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -128,32 +73,7 @@ export default class TeamsComponent implements OnInit, AfterViewInit {
   templateUrl: './DialogTeam.html',
   styleUrls: ['./teams.component.scss'],
   standalone: true,
-  imports: [CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatProgressSpinnerModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatTreeModule,
-    MatPaginatorModule,
-    MatTableModule,
-    MatTooltipModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatAutocompleteModule,
-    MatTabsModule,
-    CdkTreeModule,
-    DragDropModule,
-    MatProgressBarModule,
-    MatSortModule,
-    MatRadioModule,MatSnackBarModule]  // Asumiendo que usas botones en el diáEscudo
+  imports: [SharedModule]  // Asumiendo que usas botones en el diáEscudo
 })
 export class DialogTeam implements OnInit {
   @ViewChild(TeamsComponent) team: TeamsComponent | undefined;
@@ -171,10 +91,11 @@ export class DialogTeam implements OnInit {
     public dialogRef: MatDialogRef<DialogTeam>,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
+    private dataService: DataService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.form = this.formBuilder.group({
-      name: ["", [Validators.required]],
-      teamId: [null]
+      teamName: ["", [Validators.required]],
+      idTeam: [null]
     });
     this.action = data.action;
     this.loadExistingTeams();
@@ -188,10 +109,10 @@ export class DialogTeam implements OnInit {
       case 'edit':
         this.title = 'Editar equipo';
         this.form.setValue({
-          name: this.data.teamName,
-          teamId: this.data.teamId
+          teamName: this.data.teamName,
+          idTeam: this.data.idTeam
         })
-        this.previewUrl=this.data.EscudoUrl
+        this.previewUrl = this.data.teamImage
         break;
       case 'delete':
         this.title = 'Eliminar equipo';
@@ -203,54 +124,49 @@ export class DialogTeam implements OnInit {
   }
   create() {
     if (this.action == 'new' || this.action == 'edit') {
+      console.log(this.form.valid);
       if (this.form.valid) {
         if (this.action == 'new') {
           try {
-            const teamData = {
-              teamName: this.form.value.name,
-              EscudoUrl: this.previewUrl,
-              teamId:  new Date().getTime()
+            const teamData: Team = {
+              teamName: this.form.value.teamName,
+              teamImage: this.previewUrl,
+              idTeam: new Date().getTime()
             };
-            this.teamData.push(teamData)
-            localStorage.setItem('teamsData', JSON.stringify(this.teamData))
-            this.openSnackBar("Equipo guardado con exito", "Cerrar",'success');
+            this.dataService.saveItem('teamsData', teamData);
+            this.openSnackBar("Equipo guardado con exito", "Cerrar", 'success');
             TeamsComponent.changeValueDialog(1)
             this.dialogClose();
           } catch (error) {
-            this.openSnackBar("Error al guardar equipo", "Cerrar",'error');
+            this.openSnackBar("Error al guardar equipo", "Cerrar", 'error');
           }
 
         } else {
           try {
-            const teamIndex = this.teamData.findIndex((team: any) => team.teamId == this.data.teamId);
-            const teamData = {
-              teamName: this.form.value.name,
-              EscudoUrl: this.previewUrl,
-              teamId:this.form.value.teamId
+            const teamData: Team = {
+              teamName: this.form.value.teamName,
+              teamImage: this.previewUrl,
+              idTeam: this.form.value.idTeam
             };
-            if (teamIndex > -1) {
-              this.teamData[teamIndex] = teamData; // Update existing team
-              localStorage.setItem('teamsData', JSON.stringify(this.teamData));
-              this.openSnackBar("Equipo actualizado con exito", "Cerrar",'success');
-              TeamsComponent.changeValueDialog(1)
-              this.dialogClose();
-            }
+            this.dataService.editItem('teamsData', teamData);
+            this.openSnackBar("Equipo actualizado con exito", "Cerrar", 'success');
+            TeamsComponent.changeValueDialog(1)
+            this.dialogClose();
           } catch (error) {
-            this.openSnackBar("Error al actualizar equipo", "Cerrar",'error');
+            this.openSnackBar("Error al actualizar equipo", "Cerrar", 'error');
           }
         }
       } else {
-        this.openSnackBar("Todos los campos son obligatorios", "Cerrar",'error');
+        this.openSnackBar("Todos los campos son obligatorios", "Cerrar", 'error');
       }
     } else {
       try {
-        this.teamData = this.teamData.filter((team: any) => team.teamId != this.data.teamId)
-        localStorage.setItem('teamsData', JSON.stringify(this.teamData));
-        this.openSnackBar("Equipo eliminado con exito", "Cerrar",'success');
+        this.dataService.deleteItem('teamsData',this.data);
+        this.openSnackBar("Equipo eliminado con exito", "Cerrar", 'success');
         TeamsComponent.changeValueDialog(1)
         this.dialogClose();
       } catch (error) {
-        this.openSnackBar("Error al eliminar equipo", "Cerrar",'error');
+        this.openSnackBar("Error al eliminar equipo", "Cerrar", 'error');
       }
     }
   }
@@ -269,10 +185,11 @@ export class DialogTeam implements OnInit {
     }
   }
   loadExistingTeams() {
-    this.teamData = JSON.parse(localStorage.getItem('teamsData')!) || [];  }
-  openSnackBar(message: string, action: string,type:string) {
+    this.teamData = JSON.parse(localStorage.getItem('teamsData')!) || [];
+  }
+  openSnackBar(message: string, action: string, type: string) {
     this.snackBar.open(message, action, {
-      duration: 300000,
+      duration: 3000,
       horizontalPosition: 'right',
       verticalPosition: 'top',
       panelClass: type

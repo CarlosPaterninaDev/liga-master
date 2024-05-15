@@ -13,7 +13,7 @@
         <div class="card-body row justify-content-center">
             <mat-form-field appearance="outline" class="col-12 col-md-6">
                 <mat-label>Nombre del equipo</mat-label>
-                <input matInput formControlName="name" type="text" [maxlength]="500">
+                <input matInput formControlName="teamName" type="text" [maxlength]="500">
             </mat-form-field>
             <div class="image-upload">
                 <input type="file" (change)="onFileSelected($event)" hidden #fileInput>
