@@ -1,0 +1,19 @@
+<h2>Ingresa el OTP recibido</h2>
+
+<p>Ingresa el código de 4 dígitos que recibiste en tu correo electrónico</p>
+
+
+<form [formGroup]="codeForm">
+ 
+    <code-input #code
+      ngDefaultControl
+      formControlName="code"
+      [isCodeHidden]="true"
+      [codeLength]="4"
+      (codeCompleted)="onCodeCompleted($event)"
+    >
+    </code-input>
+    <mat-error *ngIf="codeForm.controls['code'].hasError('required')">
+      Codigo requerido
+    </mat-error>
+  </form>

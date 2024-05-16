@@ -34,10 +34,11 @@ export class CrearMatchComponent implements OnInit  {
     });    
   }
   ngOnInit(): void {
-    
-    this.teams = this.getTeams();
-    this.filteredTeams1 = this.teams;
-    this.filteredTeams2 = this.teams;
+
+    this.teams = this.teamService.getTeams();
+console.log(this.teams);
+    this.filteredTeams1 = [...this.teams];
+    this.filteredTeams2 = [...this.teams];
     this.onChanges();
   }
   
@@ -58,7 +59,7 @@ export class CrearMatchComponent implements OnInit  {
         idMatch: 0,
         team1:{ idTeam:this.matchForm.get('team1')?.value.idTeam, teamName: this.matchForm.get('team1')?.value.teamName},
         golesTeam1: this.matchForm.value.golesTeam1,
-        team2: {idTeam:this.matchForm.get('team2')?.value.idTeam, teamName: this.matchForm.get('team2')?.value.idTeam},
+        team2: {idTeam:this.matchForm.get('team2')?.value.idTeam, teamName: this.matchForm.get('team2')?.value.teamName},
         golesTeam2: this.matchForm.value.golesTeam1
       }
       this.matchService.addMatch(matchData)
@@ -69,14 +70,6 @@ export class CrearMatchComponent implements OnInit  {
 
   onCancel(): void{
     this.dialogRef.close(false);
-  }
-
-  getTeams(): Team[] {
-    return[
-      {idTeam: 1, teamName: 'Equipo 1', teamImage: ''},
-      {idTeam: 2, teamName: 'Equipo 2', teamImage: ''},
-      {idTeam: 3, teamName: 'Equipo 3', teamImage: ''}
-    ];
   }
 
 }

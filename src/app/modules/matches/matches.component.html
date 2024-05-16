@@ -1,28 +1,71 @@
 <!-- matches.component.html -->
-<mat-table [dataSource]="matches" class="mat-elevation-z8">
+
+<div class="shadow mt-3">
+  <div class="card">
+    <button (click)="openAddMatchModal()"
+      mat-fab
+      matTooltip="Nuevo sorteo"
+      class="fab"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <div
+      class="card-header margin-top d-flex align-items-center justify-content-between flex-wrap"
+      style="gap: 1rem"
+    >
+      <div
+        class="m-1 d-flex align-items-baseline justify-content-start flex-column flex-sm-column text-left flex-wrap"
+      >
+        <h2 >
+          {{'LISTADO DE PARTIDOS JUGADOS' | uppercase}}
+        </h2>
+        <p>Partidos registrados</p>
+      </div>
+      <!-- <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Buscar</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Buscar"
+          (keyup)="applyFilter($event)"
+          #input
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field> -->
+    </div>
+
+    <div class="card-body overflow-auto p-0">
+   
+  <mat-table [dataSource]="matches" class="mat-elevation-z8">
     <ng-container matColumnDef="equipo1">
-      <mat-header-cell *matHeaderCellDef> Equipo 1 </mat-header-cell>
-      <mat-cell *matCellDef="let match"> {{match.team1.teamName}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef> Local </mat-header-cell>
+      <mat-cell *matCellDef="let match"> {{ match.team1.teamName }} </mat-cell>
     </ng-container>
-  
-    <ng-container matColumnDef="equipo2">
-      <mat-header-cell *matHeaderCellDef> Equipo 2 </mat-header-cell>
-      <mat-cell *matCellDef="let match"> {{match.team2.teamName}} </mat-cell>
-    </ng-container>
-  
+
     <ng-container matColumnDef="golesEquipo1">
-      <mat-header-cell *matHeaderCellDef> Goles Equipo 1 </mat-header-cell>
-      <mat-cell *matCellDef="let match"> {{match.golesTeam1}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef> # Goles </mat-header-cell>
+      <mat-cell *matCellDef="let match"> {{ match.golesTeam1 }} </mat-cell>
     </ng-container>
-  
+
     <ng-container matColumnDef="golesEquipo2">
-      <mat-header-cell *matHeaderCellDef> Goles Equipo 2 </mat-header-cell>
-      <mat-cell *matCellDef="let match"> {{match.golesTeam2}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef> # Goles </mat-header-cell>
+      <mat-cell *matCellDef="let match"> {{ match.golesTeam2 }} </mat-cell>
     </ng-container>
-  
+
+    <ng-container matColumnDef="equipo2">
+      <mat-header-cell *matHeaderCellDef> Visitantes </mat-header-cell>
+      <mat-cell *matCellDef="let match"> {{ match.team2.teamName }} </mat-cell>
+    </ng-container>
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
-  
-  <button mat-raised-button color="primary" (click)="openAddMatchModal()">Agregar Partido</button>
-  
+    </div>
+
+  </div>
+</div>
+
+
+
+
+

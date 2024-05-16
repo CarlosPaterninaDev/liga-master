@@ -17,7 +17,7 @@
             </mat-form-field>
             <div class="image-upload">
                 <input type="file" (change)="onFileSelected($event)" hidden #fileInput>
-                <button mat-raised-button (click)="fileInput.click()">Seleccionar Escudo</button>
+                <button mat-raised-button color="primary" (click)="fileInput.click()">Seleccionar Escudo</button>
                 <img [src]="previewUrl" *ngIf="previewUrl" class="image-preview">
             </div>
 
@@ -39,9 +39,9 @@
         </div>
     </ng-template>
 
-    <div class="card-footer d-flex align-items-center justify-content-end gap-2">
-        <button mat-flat-button class="btn_cancel" type="button" (click)="dialogClose()">Cancelar</button>
-        <button mat-flat-button type="button" (click)="create()" class="btn_save">{{actions[action]}}</button>
+    <div  class="card-footer d-flex align-items-center justify-content-end gap-2">
+        <button style="margin-top: 20px;" mat-flat-button  type="button" (click)="dialogClose()">Cancelar</button>
+        <button  style="margin-top: 20px;" mat-flat-button color="primary" type="button" (click)="create()">{{actions[action]}}</button>
 
     </div>
 </form>

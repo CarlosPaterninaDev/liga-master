@@ -8,6 +8,7 @@ import { DataService } from '../../services/data.service';
 import { SharedModule } from '../shared.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Team } from '../../models/team.model';
+import { TeamService } from './team.service';
 type ActionType = 'new' | 'edit' | 'delete';
 @Component({
   selector: 'app-teams',
@@ -92,7 +93,9 @@ export class DialogTeam implements OnInit {
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private dataService: DataService,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private teamService: TeamService
+  ) {
     this.form = this.formBuilder.group({
       teamName: ["", [Validators.required]],
       idTeam: [null]
@@ -186,6 +189,8 @@ export class DialogTeam implements OnInit {
   }
   loadExistingTeams() {
     this.teamData = JSON.parse(localStorage.getItem('teamsData')!) || [];
+    this.teamService.setTeams(this.teamData);
+
   }
   openSnackBar(message: string, action: string, type: string) {
     this.snackBar.open(message, action, {

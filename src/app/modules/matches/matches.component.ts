@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Match } from '../../models/match.model';
 import { MatchesService } from './match.service';
 import { CrearMatchComponent } from './crear-match/crear-match.component';
@@ -14,7 +14,7 @@ import { SharedModule } from '../shared.module';
 })
 export default class MatchesComponent {
 
-  displayedColumns: string[] = ['equipo1', 'golesEquipo1', 'equipo2', 'golesEquipo2'];
+  displayedColumns: string[] = ['equipo1', 'golesEquipo1', 'golesEquipo2', 'equipo2'];
   matches: Match[] ;
 
   constructor(private dialog: MatDialog,
@@ -23,9 +23,15 @@ export default class MatchesComponent {
     }
 
   openAddMatchModal(): void{
-    const dialogRef = this.dialog.open(CrearMatchComponent,{
-      width: '250px'
-    });    
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '50%';
+    dialogConfig.height = "500px";
+    // const dialogRef = this.dialog.open(DialogTeam, dialogConfig);
+
+    const dialogRef = this.dialog.open(CrearMatchComponent,
+      dialogConfig
+    );    
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if(result){

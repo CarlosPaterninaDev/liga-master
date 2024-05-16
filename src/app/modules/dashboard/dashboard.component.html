@@ -1,20 +1,47 @@
 <mat-drawer-container class="example-container">
-  <mat-drawer mode="side" opened>Drawer content
-
-    <div class="menu">
-        <button routerLink="team">Team</button>
-        <button routerLink="match">Match</button>
-    
+  <mat-drawer #drawer mode="side" opened>
+    <div class="login-logo">
+      <img src="assets/logo.png" alt="logo" />
     </div>
 
-
-
+    <mat-list role="list">
+      <h2>Menu</h2>
+      <mat-list-item role="listitem" routerLink="team">Team</mat-list-item>
+      <mat-list-item role="listitem" routerLink="match">Match</mat-list-item>
+    </mat-list>
   </mat-drawer>
-  <mat-drawer-content >
+  <mat-drawer-content>
+    <mat-toolbar>
+      <button
+        (click)="drawer.toggle()"
+        mat-icon-button
+        class="example-icon"
+        aria-label="Example icon-button with menu icon"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Liga Master</span>
+      <span class="example-spacer"></span>
+      <span>Admnistrador</span>
 
+      <button
+        mat-icon-button
+        class="example-icon favorite-icon"
+        aria-label="Example icon-button with heart icon"
+      >
+        <mat-icon>face</mat-icon>
+      </button>
+
+      <button (click)="logout()"
+        mat-icon-button
+        class="example-icon"
+        aria-label="Example icon-button with share icon"
+      >
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
     <div class="content">
-        <router-outlet></router-outlet>
-
+      <router-outlet></router-outlet>
     </div>
   </mat-drawer-content>
 </mat-drawer-container>

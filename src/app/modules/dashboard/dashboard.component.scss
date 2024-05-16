@@ -16,3 +16,27 @@
     width: 80%;
     padding: 40px;
 }
+
+.example-spacer {
+    flex: 1 1 auto;
+  }
+
+
+  mat-drawer{
+    padding: 18px;
+  }
+
+  mat-list{
+    width: 200px;
+  }
+
+  .login-logo{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img{
+      width: 100px;
+
+    }
+  }
