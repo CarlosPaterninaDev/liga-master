@@ -1,31 +1,76 @@
-<form [formGroup]="matchForm" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="fill">
-      <mat-label>Equipo 1</mat-label>
-      <mat-select formControlName="team1">
-        <mat-option *ngFor="let team of filteredTeams1" [value]="team">
-          {{ team.teamName }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    
-    <input matInput type="number" formControlName="golesTeam1" placeholder="Goles del equipo 1">  
-    <span>VS</span>   
-  
-    <mat-form-field>
-      <mat-label>Seleciona Equipo 2</mat-label>
-      <mat-select formControlName="team2">
-        <mat-option *ngFor="let team of filteredTeams2" [value]="team">
-          {{ team.teamName }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    
-    <input matInput type="number" formControlName="golesTeam2" placeholder="Goles del equipo 2">
-    
+<div class="container">
+  <h2>
+    {{ "Registro de fecha" | uppercase }}
+  </h2>
+  <p>Ingresa los datos del partido</p>
 
-    <button mat-button type="submit" [disabled]="!matchForm.valid">Guardar</button>
-    <button mat-button type="button" (click)="onCancel()">Cancelar</button>
-  
+  @if (this.teams.length === 0) {
+  <mat-error>
+    No hay equipos registrados, por favor registra al menos 2 equipos
+  </mat-error>
+  }
+
+  <form [formGroup]="matchForm" (ngSubmit)="onSubmit()">
+    <div class="match">
+      <div class="team">
+        <mat-form-field appearance="fill">
+          <mat-label>Local</mat-label>
+          <mat-select formControlName="team1">
+            <mat-option *ngFor="let team of filteredTeams1" [value]="team">
+              {{ team.teamName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <input
+          matInput
+          type="number"
+          formControlName="golesTeam1"
+          placeholder="Goles del equipo 1"
+        />
+
+        <mat-error class="bottom" *ngIf="matchForm.controls['golesTeam1'].hasError('min')">
+          No puede ser menor a 0
+        </mat-error>
+      </div>
+      <span>VS</span>
+
+      <div class="team">
+        <mat-form-field>
+          <mat-label>Visitante</mat-label>
+          <mat-select formControlName="team2">
+            <mat-option *ngFor="let team of filteredTeams2" [value]="team">
+              {{ team.teamName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <input
+          matInput
+          type="number"
+          formControlName="golesTeam2"
+          placeholder="Goles del equipo 2"
+        />
+        <mat-error class="bottom" *ngIf="matchForm.controls['golesTeam2'].hasError('min')">
+          No puede ser menor a 0
+        </mat-error>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="!matchForm.valid"
+      >
+        Guardar Resultado
+      </button>
+      <button mat-flat-button type="button" (click)="onCancel()">
+        Cancelar
+      </button>
+    </div>
+
     <!-- Add more fields and a submit button here -->
   </form>
-  
+</div>
