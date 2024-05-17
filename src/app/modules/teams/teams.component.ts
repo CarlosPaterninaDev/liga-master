@@ -26,7 +26,8 @@ export default class TeamsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   static switch: any = 0;
   dataSource: any = [];
-  constructor(private dialog: MatDialog, private dataService: DataService) { }
+  constructor(private dialog: MatDialog,     private teamService: TeamService
+  ) { }
   ngOnInit() {
 
     this.loadExistingTeams();
@@ -36,7 +37,8 @@ export default class TeamsComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
   loadExistingTeams() {
-    let data = this.dataService.getItems('teamsData')
+    let data = this.teamService.getTeams();
+    
     this.dataSource = new MatTableDataSource<any>(data);
   }
   applyFilter(event: Event) {
@@ -92,7 +94,6 @@ export class DialogTeam implements OnInit {
     public dialogRef: MatDialogRef<DialogTeam>,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private dataService: DataService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private teamService: TeamService
   ) {
@@ -130,12 +131,12 @@ export class DialogTeam implements OnInit {
 
         if (this.action == 'new') {
           try {
-            const existTeam = this.teamData.find((team: Team) => team.teamName == this.form.value.teamName)
+            const existTeam = this.teamData.find((team: Team) => team.teamName.toLocaleLowerCase().trim() == this.form.value.teamName.toLocaleLowerCase().trim())
             if (existTeam) {
               this.openSnackBar("Ya existe un equipo con este nombre", "Cerrar", 'error');
             } else {
               const teamData: Team = {
-                teamName: this.form.value.teamName,
+                teamName: this.form.value.teamName.trim(),
                 teamImage: this.previewUrl,
                 idTeam: new Date().getTime(),
                 golesAFavor: 0,
@@ -143,7 +144,8 @@ export class DialogTeam implements OnInit {
                 puntos: 0,
                 diferenciaGoles: 0
               };
-              this.dataService.saveItem('teamsData', teamData);
+    
+              this.teamService.addteam(teamData);
               this.openSnackBar("Equipo guardado con exito", "Cerrar", 'success');
               TeamsComponent.changeValueDialog(1)
               this.dialogClose();
@@ -155,27 +157,31 @@ export class DialogTeam implements OnInit {
 
         } else {
           try {
+
+            const { golesAFavor, golesEnContra, diferenciaGoles, puntos, teamName } = this.teamService.getTeamById(this.form.value.idTeam);
+
             const teamData: Team = {
-              teamName: this.form.value.teamName,
+              teamName: this.form.value.teamName.trim(),
               teamImage: this.previewUrl,
               idTeam: this.form.value.idTeam,
-              golesAFavor: this.teamService.getTeams().find(eq=>eq.idTeam === this.form.value.idTeam)!.golesAFavor,
-              golesEnContra: this.teamService.getTeams().find(eq=>eq.idTeam === this.form.value.idTeam)!.golesEnContra,
-              diferenciaGoles: this.teamService.getTeams().find(eq=>eq.idTeam === this.form.value.idTeam)!.diferenciaGoles,
-              puntos: this.teamService.getTeams().find(eq=>eq.idTeam === this.form.value.idTeam)!.puntos,
+              golesAFavor,
+              golesEnContra,
+              diferenciaGoles,
+              puntos,
             };
-            if (this.data.teamName != this.form.value.teamName) {
-              const existTeam = this.teamData.find((team: Team) => team.teamName == this.form.value.teamName)
+
+            if (teamName.toLocaleLowerCase() !== this.form.value.teamName.toLocaleLowerCase()) {
+              const existTeam = this.teamData.find((team: Team) => team.teamName.toLocaleLowerCase() == this.form.value.teamName.toLocaleLowerCase())
               if (existTeam) {
                 this.openSnackBar("Ya existe un equipo con este nombre", "Cerrar", 'error');
               } else {
-                this.dataService.editItem('teamsData', teamData);
+                this.teamService.updateTeam(teamData);
                 this.openSnackBar("Equipo actualizado con exito", "Cerrar", 'success');
                 TeamsComponent.changeValueDialog(1)
                 this.dialogClose();
               }
             } else {
-              this.dataService.editItem('teamsData', teamData);
+              this.teamService.updateTeam(teamData);
               this.openSnackBar("Equipo actualizado con exito", "Cerrar", 'success');
               TeamsComponent.changeValueDialog(1)
               this.dialogClose();
@@ -189,7 +195,7 @@ export class DialogTeam implements OnInit {
       }
     } else {
       try {
-        this.dataService.deleteItem('teamsData', this.data);
+        this.teamService.removeTeam(this.data);
         this.openSnackBar("Equipo eliminado con exito", "Cerrar", 'success');
         TeamsComponent.changeValueDialog(1)
         this.dialogClose();
@@ -213,7 +219,7 @@ export class DialogTeam implements OnInit {
     }
   }
   loadExistingTeams() {
-    this.teamData = JSON.parse(localStorage.getItem('teamsData')!) || [];
+    this.teamData = this.teamService.getTeams()
     this.teamService.setTeams(this.teamData);
 
   }

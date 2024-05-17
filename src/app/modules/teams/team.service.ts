@@ -20,5 +20,26 @@ export class TeamService {
     localStorage.setItem('teamsData', JSON.stringify(teams));
   }
 
-  
+  addteam(team: Team) {
+    this.teamData.push(team);
+    this.setTeams(this.teamData)
+  }
+
+  getTeamById(id: number): Team {
+    return this.teamData.find((team: Team) => team.idTeam === id);
+  }
+
+  updateTeam(team: Team) {
+    const teamIndex = this.teamData.findIndex((t: Team) => t.idTeam === team.idTeam);
+    if (teamIndex > -1) {
+      this.teamData[teamIndex] = team;
+    }
+    this.setTeams(this.teamData)
+  }
+
+  removeTeam(team: Team) {
+    this.teamData = this.teamData.filter((t: Team) => t.idTeam !== team.idTeam);
+    this.setTeams(this.teamData)
+  }
+
 }

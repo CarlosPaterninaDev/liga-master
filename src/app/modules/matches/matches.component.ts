@@ -14,42 +14,43 @@ import { BehaviorSubject } from 'rxjs';
   standalone: true,
   imports: [SharedModule, StandingsComponent],
   templateUrl: './matches.component.html',
-  styleUrl: './matches.component.scss'
+  styleUrl: './matches.component.scss',
 })
 export default class MatchesComponent {
   private equiposSubject = new BehaviorSubject<Team[]>([]);
   equipos$ = this.equiposSubject.asObservable();
 
-  displayedColumns: string[] = ['equipo1', 'golesEquipo1', 'golesEquipo2', 'equipo2'];
-  matches: Match[] ;
-  equipos: Team[]=[];
+  displayedColumns: string[] = [
+    'equipo1',
+    'golesEquipo1',
+    'golesEquipo2',
+    'equipo2',
+  ];
+  matches: Match[];
+  equipos: Team[] = [];
 
-  constructor(private dialog: MatDialog,
+  constructor(
+    private dialog: MatDialog,
     private matchService: MatchesService,
-    private teamService: TeamService){
-      this.matches = this.matchService.getMacthes();
-    }
+    private teamService: TeamService
+  ) {
+    this.matches = this.matchService.getMacthes();
+    console.log(this.matches);
+  }
 
-  openAddMatchModal(): void{
-
+  openAddMatchModal(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '50%';
-    dialogConfig.height = "700px";
+    dialogConfig.height = '700px';
     // const dialogRef = this.dialog.open(DialogTeam, dialogConfig);
 
-    const dialogRef = this.dialog.open(CrearMatchComponent,
-      dialogConfig
-    );    
+    const dialogRef = this.dialog.open(CrearMatchComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      if(result){
+      if (result) {
         this.matches = this.matchService.getMacthes();
-        this.equipos = this.teamService.getTeams();        
+        this.equipos = this.teamService.getTeams();
       }
     });
   }
-
- 
-
-
 }

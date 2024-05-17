@@ -11,6 +11,7 @@ import { BehaviorSubject } from 'rxjs';
 export class MatchesService {
   private equiposSubject = new BehaviorSubject<Team[]>([]);
   equipos$ = this.equiposSubject.asObservable();
+
   
   private matches: Match[] = [];
   private equipos: Team[]=[];
@@ -19,12 +20,12 @@ export class MatchesService {
     private teamService:TeamService
   ) {
     this.loadMatches();
-    this.equipos = this.dataService.getItems('teamsData');
+    this.equipos = this.teamService.getTeams();
     this.equiposSubject.next(this.equipos);
    }
 
   addMatch(match: Match): void{
-    match.idMatch = this.getNextId();    
+    match.idMatch = new Date().getTime();    
     this.matches.push(match);
     this.dataService.saveItem('matches', match);
     this.actualizarTablaDePosiciones(match);
@@ -37,10 +38,6 @@ export class MatchesService {
 
   private loadMatches(): void{
     this.matches = JSON.parse(localStorage.getItem('matches') || '[]');
-  }
-
-  getNextId(): number{
-    return this.matches.length >0 ? Math.max(...this.matches.map(match=> match.idMatch)) + 1: 1;
   }
 
   actualizarTablaDePosiciones(match: Match){
@@ -65,7 +62,10 @@ export class MatchesService {
         equipoVisitante.puntos += 1;
       }
 
-      this.teamService.setTeams([[equipoLocal,equipoVisitante]])
+      console.log(equipoLocal, equipoVisitante);
+
+      this.teamService.updateTeam(equipoLocal);
+      this.teamService.updateTeam(equipoVisitante);
 
       this.equipos.sort((a, b) => {
         if (b.puntos === a.puntos) {

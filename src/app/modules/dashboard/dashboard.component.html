@@ -6,9 +6,27 @@
 
     <mat-list role="list">
       <h2>Menu</h2>
-      <mat-list-item role="listitem" routerLink="team">Team</mat-list-item>
-      <mat-list-item role="listitem" routerLink="match">Match</mat-list-item>
+      <mat-list-item
+        role="listitem"
+        routerLinkActive="active"
+        routerLink="team"
+      >
+        <mat-icon matListItemIcon>group</mat-icon>
+        <div matListItemTitle>Team</div>
+        <div matListItemLine>Administracion de equipos</div>
+      </mat-list-item>
+      <mat-list-item
+        role="listitem"
+        routerLinkActive="active"
+        routerLink="match"
+      >
+        <mat-icon matListItemIcon>sports_and_outdoors</mat-icon>
+        <div matListItemTitle>Match</div>
+        <div matListItemLine>Administracion de partidos</div>
+      </mat-list-item>
     </mat-list>
+
+  
   </mat-drawer>
   <mat-drawer-content>
     <mat-toolbar>
@@ -32,7 +50,8 @@
         <mat-icon>face</mat-icon>
       </button>
 
-      <button (click)="logout()"
+      <button
+        (click)="logout()"
         mat-icon-button
         class="example-icon"
         aria-label="Example icon-button with share icon"

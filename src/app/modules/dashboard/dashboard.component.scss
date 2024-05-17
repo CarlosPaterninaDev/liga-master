@@ -27,7 +27,7 @@
   }
 
   mat-list{
-    width: 200px;
+    width: 300px;
   }
 
   .login-logo{
@@ -39,4 +39,22 @@
       width: 100px;
 
     }
+  }
+
+  .active{
+    background-color: #00ff66;
+    
+  }
+
+  mat-list-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  mat-toolbar{
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
