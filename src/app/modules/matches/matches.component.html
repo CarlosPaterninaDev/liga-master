@@ -1,11 +1,28 @@
 <!-- matches.component.html -->
-<div> 
+<div class="shadow mt-3 card">
+
+  <div
+  class="card-header margin-top d-flex align-items-center justify-content-between flex-wrap"
+  style="gap: 1rem"
+>
+  <div
+    class="m-1 d-flex align-items-baseline justify-content-start flex-column flex-sm-column text-left flex-wrap"
+  >
+    <h2>
+      {{ "Tabla de posiciones" | uppercase }}
+    </h2>
+    <p>Lideres de la liga</p>
+
+  </div>
+</div>
+
   <app-standings></app-standings>
 </div>
 
 <div class="shadow mt-3">
   <div class="card">
-    <button (click)="openAddMatchModal()"
+    <button
+      (click)="openAddMatchModal()"
       mat-fab
       matTooltip="Nuevo Partido"
       class="fab"
@@ -19,56 +36,52 @@
       <div
         class="m-1 d-flex align-items-baseline justify-content-start flex-column flex-sm-column text-left flex-wrap"
       >
-        <h2 >
-          {{'LISTADO DE PARTIDOS JUGADOS' | uppercase}}
+        <h2>
+          {{ "LISTADO DE PARTIDOS JUGADOS" | uppercase }}
         </h2>
         <p>Partidos registrados</p>
       </div>
-      <!-- <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Buscar</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Buscar"
-          (keyup)="applyFilter($event)"
-          #input
-        />
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field> -->
     </div>
 
     <div class="card-body overflow-auto p-0">
-   
-  <mat-table [dataSource]="matches" class="mat-elevation-z8">
-    <ng-container matColumnDef="equipo1">
-      <mat-header-cell *matHeaderCellDef> Local </mat-header-cell>
-      <mat-cell *matCellDef="let match">    <img src="{{ match.team1.teamImage || 'assets/flag.png' }}" alt="" height="40px" /> {{ match.team1.teamName }} </mat-cell>
-    </ng-container>
+      <mat-table [dataSource]="matches" class="mat-elevation-z8">
+        <ng-container matColumnDef="equipo1">
+          <mat-header-cell *matHeaderCellDef> Local </mat-header-cell>
+          <mat-cell *matCellDef="let match">
+            <img
+              src="{{ match.team1.teamImage || 'assets/flag.png' }}"
+              alt=""
+              height="40px"
+            />
+            {{ match.team1.teamName }}
+          </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="golesEquipo1">
-      <mat-header-cell *matHeaderCellDef> # Goles </mat-header-cell>
-      <mat-cell *matCellDef="let match"> {{ match.golesTeam1 }} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="golesEquipo1">
+          <mat-header-cell *matHeaderCellDef> # Goles </mat-header-cell>
+          <mat-cell *matCellDef="let match"> {{ match.golesTeam1 }} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="golesEquipo2">
-      <mat-header-cell *matHeaderCellDef> # Goles </mat-header-cell>
-      <mat-cell *matCellDef="let match"> {{ match.golesTeam2 }} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="golesEquipo2">
+          <mat-header-cell *matHeaderCellDef> # Goles </mat-header-cell>
+          <mat-cell *matCellDef="let match"> {{ match.golesTeam2 }} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="equipo2">
-      <mat-header-cell *matHeaderCellDef> Visitantes </mat-header-cell>
-      <mat-cell *matCellDef="let match"> <img src="{{ match.team2.teamImage || 'assets/flag.png' }}" alt="" height="40px" /> {{ match.team2.teamName }} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="equipo2">
+          <mat-header-cell *matHeaderCellDef> Visitantes </mat-header-cell>
+          <mat-cell *matCellDef="let match">
+            <img
+              src="{{ match.team2.teamImage || 'assets/flag.png' }}"
+              alt=""
+              height="40px"
+            />
+            {{ match.team2.teamName }}
+          </mat-cell>
+        </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
     </div>
-
   </div>
 </div>
-
-
-
-
-

@@ -15,7 +15,7 @@
       <div class="team">
         <img src="{{ imageTeam1 || 'assets/flag.png' }}" alt="" height="70px" />
         <mat-form-field appearance="fill">
-          
+
           <mat-label>Local</mat-label>
           <mat-select formControlName="team1" (ngModelChange)="showImage($event,'team1')">
             <mat-option *ngFor="let team of filteredTeams1" [value]="team" >
