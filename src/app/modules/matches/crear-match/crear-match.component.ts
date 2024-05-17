@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Match } from '../../../models/match.model';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatchesService } from '../match.service';
 import { SharedModule } from '../../shared.module';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
