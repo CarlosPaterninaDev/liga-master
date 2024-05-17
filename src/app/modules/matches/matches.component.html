@@ -44,45 +44,54 @@
       </div>
     </div>
 
-    <div class="card-body overflow-auto p-0">
-      <mat-table [dataSource]="matches" class="mat-elevation-z8">
+    <div class="card-body overflow-auto p-0">     
+
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
         <ng-container matColumnDef="equipo1">
-          <mat-header-cell *matHeaderCellDef> Local </mat-header-cell>
-          <mat-cell *matCellDef="let match">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Local </th>
+          <td mat-cell *matCellDef="let match">
             <img
               src="{{ match.team1.teamImage || 'assets/flag.png' }}"
               alt=""
               height="40px"
             />
             {{ match.team1.teamName }}
-          </mat-cell>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="golesEquipo1">
-          <mat-header-cell *matHeaderCellDef> # Goles </mat-header-cell>
-          <mat-cell *matCellDef="let match"> {{ match.golesTeam1 }} </mat-cell>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> # Goles </th>
+          <td mat-cell *matCellDef="let match"> {{ match.golesTeam1 }} </td>
         </ng-container>
 
         <ng-container matColumnDef="golesEquipo2">
-          <mat-header-cell *matHeaderCellDef> # Goles </mat-header-cell>
-          <mat-cell *matCellDef="let match"> {{ match.golesTeam2 }} </mat-cell>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> # Goles </th>
+          <td mat-cell *matCellDef="let match"> {{ match.golesTeam2 }} </td>
         </ng-container>
 
         <ng-container matColumnDef="equipo2">
-          <mat-header-cell *matHeaderCellDef> Visitantes </mat-header-cell>
-          <mat-cell *matCellDef="let match">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Visitantes </th>
+          <td mat-cell *matCellDef="let match">
             <img
               src="{{ match.team2.teamImage || 'assets/flag.png' }}"
               alt=""
               height="40px"
             />
             {{ match.team2.teamName }}
-          </mat-cell>
+          </td>
         </ng-container>
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-      </mat-table>
+        <ng-container matColumnDef="fechaPartido">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Partido </th>
+          <td mat-cell *matCellDef="let match">            
+            {{ match.fechaPartido | date }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 </div>

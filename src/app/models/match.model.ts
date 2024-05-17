@@ -6,4 +6,5 @@ export interface Match{
     team2: Team;
     golesTeam1: number;
     golesTeam2: number;
+    fechaPartido: Date;
 }
