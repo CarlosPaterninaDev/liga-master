@@ -1,0 +1,41 @@
+<div class="mat-elevation-z8">
+    <h2>Tabla de Posiciones</h2>
+    <table mat-table [dataSource]="dataSource" matSort>
+  
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Equipo</th>
+        <td mat-cell *matCellDef="let equipo">{{ equipo.teamName }}</td>
+      </ng-container>
+  
+      <!-- Puntos Column -->
+      <ng-container matColumnDef="puntos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Puntos</th>
+        <td mat-cell *matCellDef="let equipo">{{ equipo.puntos }}</td>
+      </ng-container>
+  
+      <!-- Goles a Favor Column -->
+      <ng-container matColumnDef="golesAFavor">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Goles a Favor</th>
+        <td mat-cell *matCellDef="let equipo">{{ equipo.golesAFavor }}</td>
+      </ng-container>
+  
+      <!-- Goles en Contra Column -->
+      <ng-container matColumnDef="golesEnContra">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Goles en Contra</th>
+        <td mat-cell *matCellDef="let equipo">{{ equipo.golesEnContra }}</td>
+      </ng-container>
+  
+      <!-- Diferencia de Goles Column -->
+      <ng-container matColumnDef="diferenciaGoles">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Diferencia de Goles</th>
+        <td mat-cell *matCellDef="let equipo">{{ equipo.diferenciaGoles }}</td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+

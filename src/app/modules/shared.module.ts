@@ -56,7 +56,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     DragDropModule,
     MatProgressBarModule,
     MatSortModule,
-    MatRadioModule,MatSnackBarModule
+    MatRadioModule,MatSnackBarModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule
   ],
   exports:[
     CommonModule,
@@ -84,7 +87,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     DragDropModule,
     MatProgressBarModule,
     MatSortModule,
-    MatRadioModule,MatSnackBarModule
+    MatRadioModule,MatSnackBarModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
   ]
 })
 export class SharedModule { }

@@ -57,13 +57,16 @@ console.log(this.teams);
     if(this.matchForm.valid){
       const matchData: Match = {
         idMatch: 0,
-        team1:{ idTeam:this.matchForm.get('team1')?.value.idTeam, teamName: this.matchForm.get('team1')?.value.teamName},
+        team1:{ idTeam:this.matchForm.get('team1')?.value.idTeam, teamName: this.matchForm.get('team1')?.value.teamName, 
+        golesAFavor: 0, golesEnContra:0, diferenciaGoles:0, puntos:0},
         golesTeam1: this.matchForm.value.golesTeam1,
-        team2: {idTeam:this.matchForm.get('team2')?.value.idTeam, teamName: this.matchForm.get('team2')?.value.teamName},
+        team2: {idTeam:this.matchForm.get('team2')?.value.idTeam, teamName: this.matchForm.get('team2')?.value.teamName,
+        golesAFavor: 0, golesEnContra:0, diferenciaGoles:0, puntos:0
+        },
         golesTeam2: this.matchForm.value.golesTeam2
       }
       this.matchService.addMatch(matchData)
-      this.dialogRef.close(true)
+      this.dialogRef.close(matchData)
     }
 
   }
