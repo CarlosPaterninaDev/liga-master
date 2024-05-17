@@ -5,6 +5,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { timer } from 'rxjs';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -23,8 +25,12 @@ import { MatListModule } from '@angular/material/list';
 export default class DashboardComponent {
   showFiller = false;
   router = inject(Router);
+  rebote = false;
+  counter = 0;
 
   logout() {
     this.router.navigate(['/login']);
   }
+
+
 }

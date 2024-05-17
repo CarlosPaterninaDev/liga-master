@@ -1,13 +1,13 @@
 <form class="card mt-3" [formGroup]="form">
     <div *ngIf="action!='delete';else other_content">
         <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 1rem;">
-            <div class="m-1 d-flex align-items-center flex-column flex-sm-row gap-2">
+            <div class="m-1">
                 <h2 class="m-0 mr-2">
                     {{title}}
                 </h2>
-                <small class="title-description">
+                <p class="title-description">
                     Digite todos los campos
-                </small>
+                </p>
             </div>
         </div>
         <div class="card-body row justify-content-center">

@@ -50,10 +50,7 @@ export class CodeOtpComponent {
 
   onCodeCompleted(value: string) {
 
-
-    console.log(value);
     if (value !== '1111') {
-      console.log('Code is incorrect');
       this.notificationService.errorNotification('Código incorrecto, por favor intente de nuevo.');
       this.ngOtpInput.reset();
     } else {
