@@ -63,6 +63,15 @@
       </div>
     </div>
 
+    <div class="match-date">
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha del Partido</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fechaPartido" placeholder="Selecciona la fecha">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
     <div class="buttons">
       <button
         mat-flat-button

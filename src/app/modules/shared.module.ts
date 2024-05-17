@@ -58,7 +58,8 @@ import { MatRadioModule } from '@angular/material/radio';
     MatRadioModule,MatSnackBarModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDatepickerModule
   ],
   exports:[
     CommonModule,
@@ -90,6 +91,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatDatepickerModule
   ]
 })
 export class SharedModule { }

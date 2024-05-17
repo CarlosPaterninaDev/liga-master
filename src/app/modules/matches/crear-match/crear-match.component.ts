@@ -48,6 +48,7 @@ export class CrearMatchComponent implements OnInit {
           Validators.pattern('^[0-9]+$'),
         ],
       ],
+      fechaPartido:[null, Validators.required]
     });
   }
   ngOnInit(): void {
@@ -92,6 +93,7 @@ export class CrearMatchComponent implements OnInit {
           puntos: 0,
         },
         golesTeam2: this.matchForm.value.golesTeam2,
+        fechaPartido: this.matchForm.value.fechaPartido
       };
 
       this.matchService.addMatch(matchData);

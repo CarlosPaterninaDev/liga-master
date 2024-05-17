@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Match } from '../../models/match.model';
 import { MatchesService } from './match.service';
@@ -8,6 +8,10 @@ import { Team } from '../../models/team.model';
 import { TeamService } from '../teams/team.service';
 import { StandingsComponent } from './standings/standings.component';
 import { BehaviorSubject } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormControl } from '@angular/forms';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-matches',
@@ -16,18 +20,25 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './matches.component.html',
   styleUrl: './matches.component.scss',
 })
-export default class MatchesComponent {
+export default class MatchesComponent implements OnInit {
   private equiposSubject = new BehaviorSubject<Team[]>([]);
   equipos$ = this.equiposSubject.asObservable();
+  dataSource!: MatTableDataSource<Match>;
+
+  @ViewChild(MatSort, { static: true }) sort!: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
   displayedColumns: string[] = [
     'equipo1',
     'golesEquipo1',
     'golesEquipo2',
     'equipo2',
+    'fechaPartido'
   ];
   matches: Match[];
   equipos: Team[] = [];
+
+  filterControl = new FormControl('');  
 
   constructor(
     private dialog: MatDialog,
@@ -35,8 +46,21 @@ export default class MatchesComponent {
     private teamService: TeamService
   ) {
     this.matches = this.matchService.getMacthes();
+    this.dataSource = new MatTableDataSource(this.matches);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
+  ngOnInit(): void {
+    
+    this.filterControl.valueChanges.subscribe(value => {
+      this.applyFilter(value!);
+    });
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
   openAddMatchModal(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '50%';
@@ -49,6 +73,9 @@ export default class MatchesComponent {
       if (result) {
         this.matches = this.matchService.getMacthes();
         this.equipos = this.teamService.getTeams();
+        this.dataSource.data = this.matches;
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       }
     });
   }
