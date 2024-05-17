@@ -19,19 +19,22 @@ export class MatchesService {
     private teamService:TeamService
   ) {
     this.loadMatches();
-    this.equipos = this.dataService.getItems('teamsData');
-    this.equiposSubject.next(this.equipos);
    }
 
   addMatch(match: Match): void{
     match.idMatch = this.getNextId();    
     this.matches.push(match);
     this.dataService.saveItem('matches', match);
-    this.actualizarTablaDePosiciones(match);
-    this.equiposSubject.next(this.equipos);
+    this.actualizarTablaDePosiciones();    
   }
 
-  getMacthes(): Match[]{
+  notificarEquipos(equipos: Team[]){
+    this.equiposSubject.next(equipos);
+  }
+
+  getMacthes(): Match[]{    
+    this.equipos = this.dataService.getItems('teamsData');
+    this.equiposSubject.next(this.equipos);
     return this.dataService.getItems('matches');
   }
 
@@ -43,37 +46,14 @@ export class MatchesService {
     return this.matches.length >0 ? Math.max(...this.matches.map(match=> match.idMatch)) + 1: 1;
   }
 
-  actualizarTablaDePosiciones(match: Match){
-    const equipoLocal = this.equipos.find(eq=> eq.idTeam === match.team1.idTeam);
-    const equipoVisitante = this.equipos.find(eq=> eq.idTeam === match.team2.idTeam);
-
-    if(equipoLocal && equipoVisitante){
-      equipoLocal.golesAFavor += match.golesTeam1;
-      equipoLocal.golesEnContra += match.golesTeam2;
-      equipoLocal.diferenciaGoles = equipoLocal.golesAFavor - equipoLocal.golesEnContra;
-
-      equipoVisitante.golesAFavor += match.golesTeam2;
-      equipoVisitante.golesEnContra += match.golesTeam1;
-      equipoVisitante.diferenciaGoles = equipoVisitante.golesAFavor - equipoVisitante.golesEnContra;
-
-      if (match.golesTeam1 > match.golesTeam2) {
-        equipoLocal.puntos += 3;
-      } else if (match.golesTeam1 < match.golesTeam2) {
-        equipoVisitante.puntos += 3;
-      } else {
-        equipoLocal.puntos += 1;
-        equipoVisitante.puntos += 1;
+  actualizarTablaDePosiciones(){
+   this.equipos = this.dataService.getItems('teamsData');       
+    this.equipos.sort((a, b) => {
+      if (b.puntos === a.puntos) {
+        return b.diferenciaGoles - a.diferenciaGoles;
       }
-
-      this.teamService.setTeams([[equipoLocal,equipoVisitante]])
-
-      this.equipos.sort((a, b) => {
-        if (b.puntos === a.puntos) {
-          return b.diferenciaGoles - a.diferenciaGoles;
-        }
-        return b.puntos - a.puntos;
-      });
-
-    }
-  }
+      return b.puntos - a.puntos;
+    });
+    this.equiposSubject.next(this.equipos);
+    }  
 }

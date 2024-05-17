@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Team } from '../../../models/team.model';
 import { TeamService } from '../../teams/team.service';
 import { SharedModule } from '../../shared.module';
@@ -15,23 +15,19 @@ import { MatchesService } from '../match.service';
   styleUrl: './standings.component.scss'
 })
 export class StandingsComponent implements OnInit {
+
   displayedColumns: string[] = ['nombre', 'puntos', 'golesAFavor', 'golesEnContra', 'diferenciaGoles'];
-  dataSource!: MatTableDataSource<Team>;
+  dataSource: MatTableDataSource<Team> = new MatTableDataSource();
 
-  @ViewChild(MatSort, { static: true })
-  sort!: MatSort;
-  @ViewChild(MatPaginator, { static: true })
-  paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort!: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
-  constructor( private matchService: MatchesService){   
-
-  }
+  constructor( private matchService: MatchesService){   }
   ngOnInit(): void {
     this.matchService.equipos$.subscribe(equipos=>{
-      this.dataSource = new MatTableDataSource(equipos);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;  
-
+      this.dataSource.data =equipos;
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;  
     })
       
   }

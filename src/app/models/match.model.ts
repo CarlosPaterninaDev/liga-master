@@ -5,5 +5,5 @@ export interface Match{
     team1: Team;
     team2: Team;
     golesTeam1: number;
-    golesTeam2: number;
+    golesTeam2: number; 
 }
