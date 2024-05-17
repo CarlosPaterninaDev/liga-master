@@ -26,7 +26,7 @@ export default class MatchesComponent {
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '50%';
-    dialogConfig.height = "500px";
+    dialogConfig.height = "700px";
     // const dialogRef = this.dialog.open(DialogTeam, dialogConfig);
 
     const dialogRef = this.dialog.open(CrearMatchComponent,

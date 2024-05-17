@@ -60,7 +60,7 @@ console.log(this.teams);
         team1:{ idTeam:this.matchForm.get('team1')?.value.idTeam, teamName: this.matchForm.get('team1')?.value.teamName},
         golesTeam1: this.matchForm.value.golesTeam1,
         team2: {idTeam:this.matchForm.get('team2')?.value.idTeam, teamName: this.matchForm.get('team2')?.value.teamName},
-        golesTeam2: this.matchForm.value.golesTeam1
+        golesTeam2: this.matchForm.value.golesTeam2
       }
       this.matchService.addMatch(matchData)
       this.dialogRef.close(true)

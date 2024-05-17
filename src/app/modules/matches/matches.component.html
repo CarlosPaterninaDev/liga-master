@@ -39,7 +39,7 @@
   <mat-table [dataSource]="matches" class="mat-elevation-z8">
     <ng-container matColumnDef="equipo1">
       <mat-header-cell *matHeaderCellDef> Local </mat-header-cell>
-      <mat-cell *matCellDef="let match"> {{ match.team1.teamName }} </mat-cell>
+      <mat-cell *matCellDef="let match">    <img src="{{ match.team1.teamImage || 'assets/flag.png' }}" alt="" height="40px" /> {{ match.team1.teamName }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="golesEquipo1">
@@ -54,7 +54,7 @@
 
     <ng-container matColumnDef="equipo2">
       <mat-header-cell *matHeaderCellDef> Visitantes </mat-header-cell>
-      <mat-cell *matCellDef="let match"> {{ match.team2.teamName }} </mat-cell>
+      <mat-cell *matCellDef="let match"> <img src="{{ match.team2.teamImage || 'assets/flag.png' }}" alt="" height="40px" /> {{ match.team2.teamName }} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
