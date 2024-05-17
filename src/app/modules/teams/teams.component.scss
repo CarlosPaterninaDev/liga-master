@@ -55,7 +55,6 @@
 .fab {
     margin-left: auto;
     top: 35px;
-    background: #404b5a;
 }
 
 //
@@ -65,6 +64,7 @@
     border: none;
     overflow-x: hidden;
     padding: 20px;
+    border-radius: 16px;
 
     .card-header {
         background-color: #fff;
