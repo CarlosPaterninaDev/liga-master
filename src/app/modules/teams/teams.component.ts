@@ -1,5 +1,5 @@
 
-import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit,ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig, MatDialog } from '@angular/material/dialog';
@@ -83,7 +83,7 @@ export class DialogTeam implements OnInit {
     edit: 'Actualizar',
     delete: 'Eliminar',
   };
-  action: ActionType;
+  action!: ActionType;
   title: any = null;
   form: FormGroup
   teamData: any = []
@@ -100,11 +100,10 @@ export class DialogTeam implements OnInit {
       teamName: ["", [Validators.required]],
       idTeam: [null]
     });
-    this.action = data.action;
-    this.loadExistingTeams();
   }
   ngOnInit() {
     this.action = this.data?.action;
+    this.loadExistingTeams();
     switch (this.action) {
       case 'new':
         this.title = 'Guardar equipo';
@@ -115,7 +114,7 @@ export class DialogTeam implements OnInit {
           teamName: this.data.teamName,
           idTeam: this.data.idTeam
         })
-        this.previewUrl = this.data.teamImage
+        this.previewUrl = this.data.teamImage || 'assets/flag.png'
         break;
       case 'delete':
         this.title = 'Eliminar equipo';
@@ -127,24 +126,30 @@ export class DialogTeam implements OnInit {
   }
   create() {
     if (this.action == 'new' || this.action == 'edit') {
-      console.log(this.form.valid);
       if (this.form.valid) {
+
         if (this.action == 'new') {
           try {
-            const teamData: Team = {
-              teamName: this.form.value.teamName,
-              teamImage: this.previewUrl,
-              idTeam: new Date().getTime(),
-              golesAFavor: 0,
-              golesEnContra: 0,
-              puntos: 0,
-              diferenciaGoles: 0
-            };
-            this.dataService.saveItem('teamsData', teamData);
-            this.openSnackBar("Equipo guardado con exito", "Cerrar", 'success');
-            TeamsComponent.changeValueDialog(1)
-            this.dialogClose();
+            const existTeam = this.teamData.find((team: Team) => team.teamName == this.form.value.teamName)
+            if (existTeam) {
+              this.openSnackBar("Ya existe un equipo con este nombre", "Cerrar", 'error');
+            } else {
+              const teamData: Team = {
+                teamName: this.form.value.teamName,
+                teamImage: this.previewUrl,
+                idTeam: new Date().getTime(),
+                golesAFavor: 0,
+                golesEnContra: 0,
+                puntos: 0,
+                diferenciaGoles: 0
+              };
+              this.dataService.saveItem('teamsData', teamData);
+              this.openSnackBar("Equipo guardado con exito", "Cerrar", 'success');
+              TeamsComponent.changeValueDialog(1)
+              this.dialogClose();
+            }
           } catch (error) {
+            console.log(error);
             this.openSnackBar("Error al guardar equipo", "Cerrar", 'error');
           }
 
@@ -159,10 +164,22 @@ export class DialogTeam implements OnInit {
               diferenciaGoles: this.teamService.getTeams().find(eq=>eq.idTeam === this.form.value.idTeam)!.diferenciaGoles,
               puntos: this.teamService.getTeams().find(eq=>eq.idTeam === this.form.value.idTeam)!.puntos,
             };
-            this.dataService.editItem('teamsData', teamData);
-            this.openSnackBar("Equipo actualizado con exito", "Cerrar", 'success');
-            TeamsComponent.changeValueDialog(1)
-            this.dialogClose();
+            if (this.data.teamName != this.form.value.teamName) {
+              const existTeam = this.teamData.find((team: Team) => team.teamName == this.form.value.teamName)
+              if (existTeam) {
+                this.openSnackBar("Ya existe un equipo con este nombre", "Cerrar", 'error');
+              } else {
+                this.dataService.editItem('teamsData', teamData);
+                this.openSnackBar("Equipo actualizado con exito", "Cerrar", 'success');
+                TeamsComponent.changeValueDialog(1)
+                this.dialogClose();
+              }
+            } else {
+              this.dataService.editItem('teamsData', teamData);
+              this.openSnackBar("Equipo actualizado con exito", "Cerrar", 'success');
+              TeamsComponent.changeValueDialog(1)
+              this.dialogClose();
+            }
           } catch (error) {
             this.openSnackBar("Error al actualizar equipo", "Cerrar", 'error');
           }
@@ -172,7 +189,7 @@ export class DialogTeam implements OnInit {
       }
     } else {
       try {
-        this.dataService.deleteItem('teamsData',this.data);
+        this.dataService.deleteItem('teamsData', this.data);
         this.openSnackBar("Equipo eliminado con exito", "Cerrar", 'success');
         TeamsComponent.changeValueDialog(1)
         this.dialogClose();
