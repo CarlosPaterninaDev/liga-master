@@ -19,7 +19,7 @@ export class MatchesService {
     private teamService:TeamService
   ) {
     this.loadMatches();
-    this.equipos = teamService.getTeams();
+    this.equipos = this.dataService.getItems('teamsData');
     this.equiposSubject.next(this.equipos);
    }
 

@@ -149,6 +149,7 @@ export class DialogTeam implements OnInit {
               this.dialogClose();
             }
           } catch (error) {
+            console.log(error);
             this.openSnackBar("Error al guardar equipo", "Cerrar", 'error');
           }
 
