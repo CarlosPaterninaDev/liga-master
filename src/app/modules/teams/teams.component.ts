@@ -134,7 +134,11 @@ export class DialogTeam implements OnInit {
             const teamData: Team = {
               teamName: this.form.value.teamName,
               teamImage: this.previewUrl,
-              idTeam: new Date().getTime()
+              idTeam: new Date().getTime(),
+              golesAFavor: 0,
+              golesEnContra: 0,
+              puntos: 0,
+              diferenciaGoles: 0
             };
             this.dataService.saveItem('teamsData', teamData);
             this.openSnackBar("Equipo guardado con exito", "Cerrar", 'success');
@@ -149,7 +153,11 @@ export class DialogTeam implements OnInit {
             const teamData: Team = {
               teamName: this.form.value.teamName,
               teamImage: this.previewUrl,
-              idTeam: this.form.value.idTeam
+              idTeam: this.form.value.idTeam,
+              golesAFavor: this.teamService.getTeams().find(eq=>eq.idTeam === this.form.value.idTeam)!.golesAFavor,
+              golesEnContra: this.teamService.getTeams().find(eq=>eq.idTeam === this.form.value.idTeam)!.golesEnContra,
+              diferenciaGoles: this.teamService.getTeams().find(eq=>eq.idTeam === this.form.value.idTeam)!.diferenciaGoles,
+              puntos: this.teamService.getTeams().find(eq=>eq.idTeam === this.form.value.idTeam)!.puntos,
             };
             this.dataService.editItem('teamsData', teamData);
             this.openSnackBar("Equipo actualizado con exito", "Cerrar", 'success');
