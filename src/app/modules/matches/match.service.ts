@@ -61,9 +61,6 @@ export class MatchesService {
         equipoLocal.puntos += 1;
         equipoVisitante.puntos += 1;
       }
-
-      console.log(equipoLocal, equipoVisitante);
-
       this.teamService.updateTeam(equipoLocal);
       this.teamService.updateTeam(equipoVisitante);
 

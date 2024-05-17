@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Match } from '../../../models/match.model';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatchesService } from '../match.service';
 import { SharedModule } from '../../shared.module';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -51,15 +51,9 @@ export class CrearMatchComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    console.log('ngOnInit');
-
     this.teams = this.teamService.getTeams();
-    console.log(this.teams);
     this.filteredTeams1 = this.teams;
     this.filteredTeams2 = this.teams;
-
-    console.log(this.filteredTeams1);
-    console.log(this.filteredTeams2);
 
     this.onChanges();
   }
@@ -100,7 +94,6 @@ export class CrearMatchComponent implements OnInit {
         golesTeam2: this.matchForm.value.golesTeam2,
       };
 
-      console.log(matchData);
       this.matchService.addMatch(matchData);
       this.dialogRef.close(matchData);
     }

@@ -51,7 +51,6 @@ export default class LoginComponent {
       this.loginForm.value.password === '12345' &&
       this.loginForm.value.username === 'admin'
     ) {
-      // this.validationCode.set(true);
       this.openBottomSheet();
     } else {
 

@@ -35,13 +35,12 @@ export default class MatchesComponent {
     private teamService: TeamService
   ) {
     this.matches = this.matchService.getMacthes();
-    console.log(this.matches);
   }
 
   openAddMatchModal(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '50%';
-    dialogConfig.height = '700px';
+    dialogConfig.height = '600px';
     // const dialogRef = this.dialog.open(DialogTeam, dialogConfig);
 
     const dialogRef = this.dialog.open(CrearMatchComponent, dialogConfig);

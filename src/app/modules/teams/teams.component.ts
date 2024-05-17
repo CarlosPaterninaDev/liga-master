@@ -107,7 +107,7 @@ export class DialogTeam implements OnInit {
     this.loadExistingTeams();
     switch (this.action) {
       case 'new':
-        this.title = 'Guardar equipo';
+        this.title = 'Crear equipo';
         break;
       case 'edit':
         this.title = 'Editar equipo';
@@ -151,7 +151,7 @@ export class DialogTeam implements OnInit {
               this.dialogClose();
             }
           } catch (error) {
-            console.log(error);
+  
             this.openSnackBar("Error al guardar equipo", "Cerrar", 'error');
           }
 
@@ -214,8 +214,7 @@ export class DialogTeam implements OnInit {
       };
       reader.readAsDataURL(file);
     } else {
-      // Manejo en caso de que no haya archivos, podrías configurar un mensaje de error, etc.
-      console.log('No file selected');
+
     }
   }
   loadExistingTeams() {
