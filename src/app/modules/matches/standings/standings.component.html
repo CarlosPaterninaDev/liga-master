@@ -1,5 +1,16 @@
 
-
+ <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Buscar</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Buscar"
+          (keyup)="applyFilter($event)"
+          #input
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    
     <table mat-table [dataSource]="dataSource" matSort>
   
       <!-- Nombre Column -->
