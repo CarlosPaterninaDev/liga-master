@@ -9,7 +9,7 @@ import { TeamService } from '../teams/team.service';
 import { StandingsComponent } from './standings/standings.component';
 import { BehaviorSubject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 
@@ -24,6 +24,12 @@ export default class MatchesComponent implements OnInit {
   private equiposSubject = new BehaviorSubject<Team[]>([]);
   equipos$ = this.equiposSubject.asObservable();
   dataSource!: MatTableDataSource<Match>;
+  filtered = false;
+
+  range = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
@@ -38,7 +44,7 @@ export default class MatchesComponent implements OnInit {
   matches: Match[];
   equipos: Team[] = [];
 
-  filterControl = new FormControl('');  
+  // filterControl = new FormControl('');  
 
   constructor(
     private dialog: MatDialog,
@@ -52,15 +58,36 @@ export default class MatchesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.range.valueChanges.subscribe((value) => {
+      this.applyFilter();
+      console.log(value);
+    })
     
-    this.filterControl.valueChanges.subscribe(value => {
-      this.applyFilter(value!);
-    });
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter() {
+
+    console.log(this.dataSource);
+    if(this.range.value.start && this.range.value.end){
+      this.matches = this.matchService.getMacthes();
+      this.dataSource = new MatTableDataSource(this.matches);
+      console.log("data",this.dataSource.data);
+      this.dataSource.data = this.dataSource.data.filter(e=> new Date(e.fechaPartido).getTime() >= this.range.value.start?.getTime()! && new Date(e.fechaPartido).getTime() <= this.range.value.end?.getTime()!);
+      this.filtered = true;
+    }
+    // this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  removeFilter(){
+    this.filtered = false;
+    this.matches = this.matchService.getMacthes();
+    this.dataSource = new MatTableDataSource(this.matches);
+
+    this.range.reset();
+
+  }
+
   openAddMatchModal(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '50%';
