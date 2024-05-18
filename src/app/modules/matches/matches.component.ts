@@ -90,9 +90,8 @@ export default class MatchesComponent implements OnInit {
 
   openAddMatchModal(): void {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = '50%';
+    dialogConfig.width = '65%';
     dialogConfig.height = '600px';
-    // const dialogRef = this.dialog.open(DialogTeam, dialogConfig);
 
     const dialogRef = this.dialog.open(CrearMatchComponent, dialogConfig);
 

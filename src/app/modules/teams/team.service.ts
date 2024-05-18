@@ -9,7 +9,7 @@ import { Match } from '../../models/match.model';
 export class TeamService {
   teamData = JSON.parse(localStorage.getItem('teamsData')!) || [];
 
-  constructor(private dataService:DataService) {}
+  constructor() {}
 
   getTeams(): Team[] {
     return this.teamData;
